@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+
+  python_example:
+    build: .
+    container_name: python-example
+    networks:
+      - project-network
+    environment:
+        MY_VAR: variable
+    ports:
+        - "5000:5000"
+
+networks:
+  project-network:
+    driver: bridge

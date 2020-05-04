@@ -1,0 +1,42 @@
+name: CI
+
+# Where to run
+on:
+  push:
+    branches:
+      - master
+
+# JOBS
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ECR_REPO: 618118007154.dkr.ecr.us-east-1.amazonaws.com/{{cookiecutter.app_name}}
+    steps:
+      - uses: actions/checkout@v1
+      {% raw %}
+      - name: get shortsha
+        id: vars
+        run: |
+         echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && pip install awscli && docker -v && aws --version
+
+      - name: Build Docker Container
+        run: |
+          docker build -t ${ECR_REPO}:${{ steps.vars.outputs.sha_short }} .
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Auth to ECR repository and push image
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REPO} && \
+          docker push ${ECR_REPO}:${{ steps.vars.outputs.sha_short }}
+      {% endraw %}

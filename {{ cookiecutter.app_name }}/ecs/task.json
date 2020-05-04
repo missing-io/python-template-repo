@@ -1,0 +1,81 @@
+{
+    "ipcMode": null,
+    "executionRoleArn": "arn:aws:iam::618118007154:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "secretOptions": null,
+                "options": {
+                    "awslogs-group": "/ecs/{{cookiecutter.app_name}}",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "entryPoint": null,
+            "portMappings": [
+                {
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "containerPort": 5000
+                }
+            ],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "ENV_VAR_2",
+                    "value": "{{cookiecutter.app_name}}"
+                },
+                {
+                    "name": "ENV_VAR_1",
+                    "value": "value1"
+                }
+            ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [],
+            "workingDirectory": null,
+            "secrets": null,
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": null,
+            "volumesFrom": [],
+            "stopTimeout": null,
+            "image": "618118007154.dkr.ecr.us-east-1.amazonaws.com/{{cookiecutter.app_name}}:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": null,
+            "essential": true,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "{{cookiecutter.app_name}}"
+        }
+    ],
+    "memory": "{{cookiecutter.request_memory}}",
+    "taskRoleArn": "arn:aws:iam::618118007154:role/{{cookiecutter.app_name}}-role",
+    "family": " {{cookiecutter.app_name}}",
+    "pidMode": null,
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "{{cookiecutter.request_cpu}}",
+    "inferenceAccelerators": [],
+    "proxyConfiguration": null,
+    "volumes": [],
+    "tags": []
+}

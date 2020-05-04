@@ -1,0 +1,11 @@
+{
+    "app_name": "name of your application",
+    "request_memory": "Request memory for your application, eg: 512",
+    "request_cpu": "Request CPU for your application, eg: 256",
+    "_copy_without_render": [
+        ".git/*",
+        "venv/*",
+        "venv",
+        ".git"
+    ]
+}
