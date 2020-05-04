@@ -1,45 +1,78 @@
 # Python Template
 
-This repository is a Python template to create new applications.
+Esse repositório tem o foco de ser utilizado como template para a criação das novas aplicações
 
-[The porpouse of this project is to use MVC design pattern](https://www.geeksforgeeks.org/mvc-design-pattern/)
 
-## Usage
+Para este projeto estamos utilizando um padrão baseado em [MVC](https://www.geeksforgeeks.org/mvc-design-pattern/) porém como Python é Multi Paradigma sinta-se a vontade para utilizar classes ou não da maneira que preferir
 
-```
-$ ./python-template.py
-```
+## Pré Requisitos
 
-## Description
-> The default application port is 5000
+> [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.0/README.html)
 
-## Structure
+> Python 3.7+
 
-```
-src
-├── __init__.py
-├── app.py
-├── controller
-│   ├── README.md
-│   ├── __init__.py
-│   └── example_controller.py
-├── flask_config.py
-└── service
-    ├── README.md
-    ├── __init__.py
-    └── example_service.py
+> [Pre-Commit](https://pre-commit.com/)
+
+> [Docker](https://docs.docker.com/get-docker/)
+
+> [Python virtualenv](https://virtualenv.pypa.io/en/latest/)
+
+## Descrição
+
+Para criar a estrutura da aplicação é necessário rodar o cookiecutter para assim gerar o template e substituir as variavéis.
+
+## Criando a aplicação a partir do template
+
+```shell
+git clone https://github.com/missing-io/python-template-repo.git
+cookiecutter python-template-repo
 ```
 
-**Controller** - Application routes where you user service functions.
+Será feita algumas perguntas para você sobre o nome da aplicação, especificação de memória e CPU, responda
 
-**Services** - Business rules for the application.
+```shell
+app_name [name of your application]: my-app
+request_memory [Request memory for your application, eg: 512]: 512
+request_cpu [Request CPU for your application, eg: 256]: 256
+```
+Após isso uma pasta será criada com o nome que você colocou no app_name, nessa caso **my_app**
 
-## TODO
+## Como Testar
 
-> Create cookiecutter template for the other applications (Including the file names)
-> Create CodeDeploy pipeline for deploying based on ECR image
-> Improve README of how to use this repository
+```shell
+cd my-app && virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python my-app.py
+```
 
+O Seguinte output será exibido no terminal:
+
+```shell
+ * Serving Flask app "src.flask_config" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 202-738-973
+```
+
+Execute o seguinte comando apontando para a sua aplicação:
+```shell
+curl -IL -XGET http://localhost:5000/health/
+```
+
+Retorno:
+```shell
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 21
+Server: Werkzeug/1.0.1 Python/3.8.2
+Date: Mon, 04 May 2020 16:22:10 GMT
+```
 ## License
 
 Copyright © 2019 missing-io. All rights reserved.
