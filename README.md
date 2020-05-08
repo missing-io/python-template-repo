@@ -5,6 +5,15 @@ Esse repositório tem o foco de ser utilizado como template para a criação das
 
 Para este projeto estamos utilizando um padrão baseado em [MVC](https://www.geeksforgeeks.org/mvc-design-pattern/) porém como Python é Multi Paradigma sinta-se a vontade para utilizar classes ou não da maneira que preferir
 
+# Importante
+
+Criar os seguintes secrets no repositório do GitHub da sua aplicação após cria-la a partir do template.
+
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+
+Solicitar o valor de cada uma delas ao Lucas.
+
 ## Pré Requisitos
 
 > [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.0/README.html)

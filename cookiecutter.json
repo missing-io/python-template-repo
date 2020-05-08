@@ -6,6 +6,7 @@
         ".git/*",
         "venv/*",
         "venv",
-        ".git"
+        ".git",
+        "ci.yaml"
     ]
 }

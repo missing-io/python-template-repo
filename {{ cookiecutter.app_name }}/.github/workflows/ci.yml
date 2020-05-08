@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 # Where to run
 on:
@@ -39,4 +39,39 @@ jobs:
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REPO} && \
           docker push ${ECR_REPO}:${{ steps.vars.outputs.sha_short }}
+      {% endraw %}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      ECR_REPO: 618118007154.dkr.ecr.us-east-1.amazonaws.com/{{cookiecutter.app_name}}
+      APP_NAME: {{cookiecutter.app_name}}
+      TASK_PATH: ecs/task.json
+    steps:
+      - uses: actions/checkout@v1
+      {% raw %}
+      - name: get shortsha
+        id: vars
+        run: |
+         echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && pip install awscli && docker -v && aws --version
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Sed patter to SHA variable to deploy
+        run: |
+          sed -i "s/__SHA__/${{ steps.vars.outputs.sha_short }}/g" ${TASK_PATH} &&
+          cat ecs/task.json
+
+      - name: Register new task definition
+        run: |
+          aws ecs register-task-definition --family ${APP_NAME} --cli-input-json file://./${TASK_PATH}
       {% endraw %}
