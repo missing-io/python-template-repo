@@ -47,6 +47,7 @@ jobs:
       ECR_REPO: 618118007154.dkr.ecr.us-east-1.amazonaws.com/{{cookiecutter.app_name}}
       APP_NAME: {{cookiecutter.app_name}}
       TASK_PATH: ecs/task.json
+      CLUSTER: tcc-dev-cluster # Cluster Name
     steps:
       - uses: actions/checkout@v1
       {% raw %}
@@ -70,8 +71,12 @@ jobs:
         run: |
           sed -i "s/__SHA__/${{ steps.vars.outputs.sha_short }}/g" ${TASK_PATH} &&
           cat ecs/task.json
-
+      
       - name: Register new task definition
         run: |
           aws ecs register-task-definition --family ${APP_NAME} --cli-input-json file://./${TASK_PATH}
-      {% endraw %}
+      
+      - name: Update service with rolling update
+        run: |
+          aws ecs update-service --cluster "${CLUSTER}" --service "${APP_NAME}-service" --task-definition $(aws ecs list-task-definitions --family-prefix ${APP_NAME} --status ACTIVE --sort DESC | jq '.taskDefinitionArns[0]' | tr -d '"')
+      {% endraw %}    
