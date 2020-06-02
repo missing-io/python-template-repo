@@ -12,7 +12,6 @@ Criar os seguintes secrets no repositório do GitHub da sua aplicação após cr
 AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 
-Solicitar o valor de cada uma delas ao Lucas.
 
 ## Pré Requisitos
 
